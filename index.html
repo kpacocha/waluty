@@ -9,7 +9,7 @@
 
 <div ng-app="myApp" ng-controller="currencyCtrl">
 
-  <div class="actual_rates_container">
+  <div class="actual_rates_container" id="actual_rates">
     <h1>Aktualnie obowiązująca tabela kursów typu C</h1>
     <h6>Data publikacji: {{ myData.effectiveDate }}</h6>
     <table>
@@ -29,7 +29,7 @@
     </table
   </div>
 
-  <div class="buy_container">
+  <div class="buy_container" id="buy">
     <h1>Chcę kupić walutę</h1>
     <div class="buy_container_content">
       <div class="choice_currency_container">
@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div class="sell_container">
+  <div class="sell_container" id="sell">
     <h1>Chcę sprzedać walutę</h1>
     <div class="sell_container_content">
       <!--label>Wybierz walutę:
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-  <div id="chart_container" ng-controller="chartCtrl">
+  <div id="chart" ng-controller="chartCtrl">
     <h1>Wykres kursu {{chartData.code}}</h1>
 
     <div>
