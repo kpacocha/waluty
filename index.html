@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+
+<body>
+
+<div ng-app="myApp" ng-controller="currencyCtrl">
+
+  <div class="actual_rates_container">
+    <h1>Aktualnie obowiązująca tabela kursów typu C</h1>
+    <h6>Data publikacji: {{ myData.effectiveDate }}</h6>
+    <table>
+      <tr>
+        <th>Kod</th>
+        <th>Nazwa</th>
+        <th>Kurs sprzedaży</th>
+        <th>Kurs kupna</th>
+
+      </tr>
+      <tr ng-repeat="rate in myData.rates">
+        <td>{{ rate.code }}</td>
+        <td>{{ rate.currency }}</td>
+        <td>{{ rate.ask }}</td>
+        <td>{{ rate.bid }}</td>
+      </tr>
+    </table
+  </div>
+
+  <div class="buy_container">
+    <h1>Chcę kupić walutę</h1>
+    <div class="buy_container_content">
+      <div class="choice_currency_container">
+        <label ng-repeat="rate in myData.rates">
+          <input type="radio" name="selectedBuyCurrency" value="{{ rate.ask }}" ng-model="$parent.selectedBuyCurrency">
+          {{rate.code}}
+        </label>
+      </div>
+
+      <label>Wpisz ilość:
+        <input type="number" name="inputBuyCount" ng-model="inputBuyCount"
+           required ng-trim="false">
+      </label>
+
+      <div class="buyResult result">
+        {{ (selectedBuyCurrency *  inputBuyCount) | number:2}}
+      </div>
+    </div>
+  </div>
+
+  <div class="sell_container">
+    <h1>Chcę sprzedać walutę</h1>
+    <div class="sell_container_content">
+      <!--label>Wybierz walutę:
+        <select ng-model="selectedSellCurrency" ng-options="x.ask as x.code for x in myData.rates">
+        </select>
+      </label-->
+      <h5>Wybierz walutę:</h5>
+      <div class="choice_currency_container">
+        <label ng-repeat="rate in myData.rates">
+          <input type="radio" name="selectedSellCurrency" value="{{ rate.ask }}" ng-model="$parent.selectedSellCurrency">
+          {{rate.code}}
+        </label>
+      </div>
+
+      <label>Wpisz ilość:
+        <input type="number" name="inputSellCount" ng-model="inputSellCount"
+           required ng-trim="false">
+      </label>
+
+      <div class="sellResult result">
+        {{ (selectedSellCurrency *  inputSellCount) | number:2}}
+      </div>
+
+    </div>
+  </div>
+
+  <div id="chart_container" ng-controller="chartCtrl">
+    <h1>Wykres kursu {{chartData.code}}</h1>
+
+    <div>
+      <label>Okres:
+        <select ng-model="selectedTerm" ng-options="x.count as x.text for x in terms" ng-change="getChartData()">
+        </select>
+      </label>
+    </div>
+
+    <h5>Wybierz walutę:</h5>
+    <div class="choice_currency_container">
+      <label ng-repeat="rate in myData.rates">
+        <input type="radio" name="currencyForPlot" value="{{ rate.code }}" ng-model="$parent.currencyForPlot" ng-change="getChartData()">
+        {{rate.code}}
+      </label>
+    </div>
+
+    <h5>Wybierz kurs:</h5>
+    <div class="choice_rate_container">
+      <label>
+        <input type="radio" name="rateForPlot" value="0" ng-model="$parent.rateForPlot" ng-change="getChartData()">
+        Kurs kupna
+      </label>
+      <label>
+        <input type="radio" name="rateForPlot" value="1" ng-model="$parent.rateForPlot" ng-change="getChartData()">
+        Kurs sprzedaży
+      </label>
+      <label>
+        <input type="radio" name="rateForPlot" value="2" ng-model="$parent.rateForPlot" ng-change="getChartData()">
+        Spread
+      </label>
+    </div>
+
+    <div id="chart_content"></div>
+  </div>
+
+</div>
+
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+</html>
